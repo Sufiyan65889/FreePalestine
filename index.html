@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medium Flag Rain Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #222;
+      width: 100vw;
+      min-height: 100vh;
+      box-sizing: border-box;
+      font-family: system-ui, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      gap: 20px;
+    }
+    .flag-container {
+      position: relative;
+      width: min(90vw, 420px);
+      aspect-ratio: 3/2;
+      min-width: 220px;
+      max-width: 420px;
+      min-height: 120px;
+      max-height: 280px;
+      overflow: hidden;
+      margin: 0 auto;
+      box-shadow: 0 0 12px #0005;
+      border-radius: 12px;
+      border: 2px solid #111;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+    }
+    .label {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      color: #222;
+      background: rgba(255,255,255,0.7);
+      z-index: 2;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+      pointer-events: none;
+      text-shadow: 0 1px 2px #fff, 0 0 5px #fff;
+    }
+    .rain-item {
+      position: absolute;
+      top: -40px;
+      font-size: 2em;
+      pointer-events: none;
+      opacity: 0.95;
+      z-index: 1;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+      animation: fall-straight 2.5s linear forwards;
+    }
+    @keyframes fall-straight {
+      0% {
+        top: -40px;
+        opacity: 1;
+      }
+      90% {
+        opacity: 0.9;
+      }
+      100% {
+        top: 100%;
+        opacity: 0.6;
+      }
+    }
+    /* Flag backgrounds - do not change */
+    .israel {
+      background: linear-gradient(to bottom, #fff 33%, #0038b8 33%, #0038b8 40%, #fff 40%, #fff 60%, #0038b8 60%, #0038b8 67%, #fff 67%),
+                  url('https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Israel.svg') center/cover no-repeat;
+    }
+    .iran {
+      background: linear-gradient(to bottom, #239f40 0 33%, #fff 33% 66%, #da0000 66% 100%),
+                  url('https://upload.wikimedia.org/wikipedia/commons/c/ca/Flag_of_Iran.svg') center/cover no-repeat;
+    }
+    .palestine {
+      background: linear-gradient(to right, #e41e20 0 25%, transparent 25% 100%),
+                  linear-gradient(to right, transparent 0 25%, #fff 25% 62.5%, #009943 62.5% 100%),
+                  url('https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Palestine.svg') center/cover no-repeat;
+    }
+    @media (max-width: 600px) {
+      .flag-container {
+        min-width: 120px;
+        max-width: 98vw;
+        min-height: 70px;
+        max-height: 150px;
+      }
+      .rain-item {
+        font-size: 1.2em;
+      }
+      .label {
+        font-size: 1em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="flag-container israel" id="israel-flag">
+    <span class="label">Israel</span>
+  </div>
+  <div class="flag-container iran" id="iran-flag">
+    <span class="label">Iran</span>
+  </div>
+  <div class="flag-container palestine" id="palestine-flag">
+    <span class="label">Palestine</span>
+  </div>
+  <script>
+    // Unicode for slipper and flower
+    const slipper = "💩";
+    const flower = "🌸";
+
+    function rainOnFlag(flagId, emoji, interval = 500) {
+      const flag = document.getElementById(flagId);
+      setInterval(() => {
+        const item = document.createElement('span');
+        item.className = 'rain-item';
+        item.textContent = emoji;
+        const flagWidth = flag.offsetWidth;
+        // Random horizontal position, but always inside the flag
+        item.style.left = (Math.random() * (flagWidth - 32) + 8) + 'px';
+        // Medium speed
+        item.style.animationDuration = (2.2 + Math.random() * 0.7) + 's';
+        flag.appendChild(item);
+        // Remove after animation completes
+        setTimeout(() => item.remove(), 3000);
+      }, interval);
+    }
+
+    // Rain slippers on Israel flag
+    rainOnFlag('israel-flag', slipper, 500);
+
+    // Rain flowers on Iran and Palestine flags
+    rainOnFlag('iran-flag', flower, 500);
+    rainOnFlag('palestine-flag', flower, 500);
+  </script>
+</body>
+</html>
